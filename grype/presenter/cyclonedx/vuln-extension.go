@@ -14,7 +14,7 @@ import (
 // Source is the origin of the vulnerability, like Github Advisories or NVD, along
 // with a URL constructed with the vulnerability ID
 type Source struct {
-	Name string `xml:"v:name,attr"`
+	Name string `xml:"name,attr"`
 	URL  string `xml:"v:url"`
 }
 
@@ -35,7 +35,7 @@ type Score struct {
 
 // Advisories holds all the links for a vulnerability
 type Advisories struct {
-	Advisory []string `xml:"advisory"`
+	Advisory []string `xml:"v:advisory"`
 }
 
 // Vulnerability is the actual description of a vulnerable artifact
@@ -43,7 +43,7 @@ type Vulnerability struct {
 	Ref     string   `xml:"ref,attr"`
 	ID      string   `xml:"v:id"`
 	Source  Source   `xml:"v:source"`
-	Ratings []Rating `xml:"v:ratings"`
+	Ratings []Rating `xml:"v:ratings>v:rating"`
 	// We do not capture Common Weakness Enumeration
 	//Cwes            Cwes             `xml:"v:cwes"`
 	Description string `xml:"v:description,omitempty"`
@@ -55,7 +55,7 @@ type Vulnerability struct {
 // Component represents the a single software/package that has vulnerabilities.
 type Component struct {
 	syftCDX.Component
-	Vulnerabilities []Vulnerability `xml:"v:vulnerabilities"`
+	Vulnerabilities *[]Vulnerability `xml:"v:vulnerabilities>v:vulnerability"`
 }
 
 // NewBomDescriptor returns a new BomDescriptor tailored for the current time and "syft" tool details.
