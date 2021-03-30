@@ -23,7 +23,7 @@ type CliOnlyOptions struct {
 
 type Application struct {
 	ConfigPath        string
-	PresenterOpt      presenter.Option
+	PresenterFormat   presenter.Format
 	Output            string `mapstructure:"output"`
 	ScopeOpt          source.Scope
 	Scope             string  `mapstructure:"scope"`
@@ -104,11 +104,7 @@ func LoadConfigFromFile(v *viper.Viper, cliOpts *CliOnlyOptions) (*Application, 
 
 func (cfg *Application) Build() error {
 	// set the presenter
-	presenterOption := presenter.ParseOption(cfg.Output)
-	if presenterOption == presenter.UnknownPresenter {
-		return fmt.Errorf("bad --output value '%s'", cfg.Output)
-	}
-	cfg.PresenterOpt = presenterOption
+	cfg.PresenterFormat = presenter.Parse(cfg.Output)
 
 	// set the scope
 	scopeOption := source.ParseScope(cfg.Scope)

@@ -132,7 +132,7 @@ func init() {
 	flag = outputFlag
 	rootCmd.Flags().StringP(
 		flag, "o", presenter.TablePresenter.String(),
-		fmt.Sprintf("report output formatter, options=%v", presenter.Options),
+		fmt.Sprintf("report output formatter, options=%v", presenter.FormatOptions),
 	)
 	if err := viper.BindPFlag(flag, rootCmd.Flags().Lookup(flag)); err != nil {
 		fmt.Printf("unable to bind flag '%s': %+v", flag, err)
@@ -216,7 +216,7 @@ func startWorker(userInput string, failOnSeverity *vulnerability.Severity) <-cha
 
 		bus.Publish(partybus.Event{
 			Type:  event.VulnerabilityScanningFinished,
-			Value: presenter.GetPresenter(appConfig.PresenterOpt, matches, packages, context, metadataProvider),
+			Value: presenter.GetPresenter(appConfig.PresenterFormat, matches, packages, context, metadataProvider),
 		})
 	}()
 	return errs
