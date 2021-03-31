@@ -63,6 +63,8 @@ Where the `format`s available are:
 - `json`: Use this to get as much information out of Grype as possible!
 - `cyclonedx`: An XML report conforming to the [CycloneDX 1.2](https://cyclonedx.org/) specification.
 - `table`: A columnar summary (default).
+  
+Additionally, Grype lets you define your own custom `format`. To do this, define your format as a [Go template](https://golang.org/pkg/text/template/) file; then, use `-o` to specify the path to the template file. For example, you could create a "CSV" format by writing a Go template that outputs CSV data, and then run `grype <image> -o ./path/to/csv.template`. Grype's template processing uses the same data models as the `json` output format — so if you're wondering what data is available as you build your template, you can use `grype <image> -o json` as a reference.
 
 Grype pulls a database of vulnerabilities derived from the publicly available [Anchore Feed Service](https://ancho.re/v1/service/feeds). This database is updated at the beginning of each scan, but an update can also be triggered manually.
 
